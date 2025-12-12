@@ -1,0 +1,147 @@
+/* Layout */
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background: #09090b;
+}
+
+.sidebar {
+    width: 250px;
+    background: #030305;
+    border-right: 1px solid var(--glass-border);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+}
+
+.mainWrapper {
+    flex: 1;
+    margin-left: 250px;
+    /* Offset for sidebar */
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+}
+
+.nav {
+    flex: 1;
+}
+
+.menuLabel {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem;
+    color: #aaa;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    margin-bottom: 0.2rem;
+    transition: all 0.2s;
+}
+
+.navItem:hover,
+.navItem.active {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary-color);
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #000;
+}
+
+.userName {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.userRole {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Topbar */
+.topbar {
+    height: 64px;
+    background: rgba(3, 3, 5, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.searchBar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    width: 300px;
+}
+
+.searchBar input {
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    width: 100%;
+}
+
+.iconBtn {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 1rem;
+    transition: color 0.2s;
+}
+
+.iconBtn:hover {
+    color: white;
+}
+
+.content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}

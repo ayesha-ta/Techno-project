@@ -1,0 +1,175 @@
+/* Hero.module.css */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 2rem 4rem;
+    background: #030305;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Aurora Effect */
+.aurora {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15), transparent 50%),
+        radial-gradient(circle at 10% 30%, rgba(139, 92, 246, 0.15), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.15), transparent 40%);
+    animation: auroraMove 20s infinite linear;
+    filter: blur(60px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes auroraMove {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.content {
+    max-width: 900px;
+    z-index: 2;
+    margin-bottom: 5rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2rem;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+.title {
+    font-size: 4.5rem;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.gradientText {
+    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.highlight {
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color), var(--accent-color));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 5s linear infinite;
+}
+
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
+}
+
+.subtitle {
+    font-size: 1.35rem;
+    color: #a1a1aa;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ctaGroup {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.primaryBtn {
+    padding: 1.2rem 2.5rem;
+    background: white;
+    color: black;
+    border-radius: 3rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    border: none;
+}
+
+.primaryBtn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.4);
+}
+
+.secondaryBtn {
+    padding: 1.2rem 2.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 3rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.secondaryBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 3D Dashboard Mockup */
+.dashboardWrapper {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1100px;
+    margin-top: -3rem;
+    perspective: 2000px;
+}
+
+.dashboardImg {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 50px 100px -20px rgba(0, 0, 0, 0.6),
+        0 0 80px rgba(59, 130, 246, 0.15);
+    transform-style: preserve-3d;
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 3rem;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+    }
+
+    .ctaGroup {
+        flex-direction: column;
+    }
+}

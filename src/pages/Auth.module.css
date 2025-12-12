@@ -1,0 +1,209 @@
+/* Container takes full screen */
+.pageContainer {
+    min-height: 100vh;
+    display: flex;
+    width: 100%;
+}
+
+/* Left side: Form (40-50% width) */
+.formSide {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    background: #030305;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Right side: Image (50-60% width) */
+.imageSide {
+    flex: 1.2;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 4rem;
+    overflow: hidden;
+}
+
+/* Overlay gradient on image */
+.imageOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(3, 3, 5, 0.9), transparent);
+}
+
+.imageContent {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+}
+
+.imageContent h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.imageContent p {
+    font-size: 1.1rem;
+    color: #ccc;
+}
+
+.card {
+    width: 100%;
+    max-width: 420px;
+    background: transparent;
+    padding: 2rem;
+    /* Removed border and background for cleaner look in split view, 
+     or kept minimal */
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 3rem;
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    align-self: flex-start;
+    width: 100%;
+    max-width: 420px;
+}
+
+.welcomeText {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 2rem;
+}
+
+.welcomeText h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.welcomeText p {
+    color: #888;
+}
+
+/* Keep existing input/button styles but refine them */
+.toggleContainer {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.3rem;
+    border-radius: 0.8rem;
+    margin-bottom: 2rem;
+    max-width: 420px;
+    width: 100%;
+}
+
+.toggleBtn {
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    background: transparent;
+    color: #888;
+    cursor: pointer;
+    border-radius: 0.6rem;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.toggleBtn.active {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.form {
+    width: 100%;
+    max-width: 420px;
+}
+
+.inputGroup {
+    margin-bottom: 1.5rem;
+}
+
+.inputGroup label {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: #ccc;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.inputGroup input {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border-radius: 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    color: white;
+    outline: none;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+
+.inputGroup input:focus {
+    border-color: var(--primary-color);
+    background: rgba(59, 130, 246, 0.05);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 0.8rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1rem;
+}
+
+.submitBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+}
+
+.footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #888;
+}
+
+.footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .pageContainer {
+        flex-direction: column;
+    }
+
+    .imageSide {
+        display: none;
+        /* Hide image on mobile for simpler view, or make it a header */
+    }
+}

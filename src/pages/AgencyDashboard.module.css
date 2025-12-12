@@ -1,0 +1,418 @@
+.container {
+    padding: 1rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    color: #888;
+}
+
+.postBtn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.postBtn:hover {
+    background: var(--secondary-color);
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.searchBar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.8rem;
+}
+
+.searchBar input {
+    background: transparent;
+    border: none;
+    color: white;
+    width: 100%;
+    outline: none;
+}
+
+.filterBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: white;
+    padding: 0 1.5rem;
+    border-radius: 0.8rem;
+    cursor: pointer;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    padding: 1.5rem;
+    border-radius: 1.2rem;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #333, #111);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.badge {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    padding: 0.3rem 0.6rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.role {
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.skill {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    color: #ccc;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.label {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.2rem;
+}
+
+.value {
+    font-weight: 600;
+}
+
+.valueHighlight {
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.viewBtn {
+    display: block;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.viewBtn:hover {
+    background: white;
+    color: black;
+}
+
+/* Profile Page */
+.profileContainer {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.backLink {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #888;
+    text-decoration: none;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+}
+
+.backLink:hover {
+    color: white;
+}
+
+.profileHeader {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+    padding: 2rem;
+    border-radius: 1.5rem;
+    border: 1px solid var(--glass-border);
+}
+
+.profileAvatarLarge {
+    width: 100px;
+    height: 100px;
+    background: #222;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.profileInfo {
+    flex: 1;
+}
+
+.nameRow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.verifiedBadge {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.profileRole {
+    font-size: 1.2rem;
+    color: #aaa;
+    margin-bottom: 1rem;
+}
+
+.bio {
+    color: #888;
+    line-height: 1.6;
+}
+
+.actionParams {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contactBtn {
+    background: white;
+    color: black;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.saveBtn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.8rem;
+    cursor: pointer;
+}
+
+.profileGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.profileSection {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    padding: 2rem;
+    border-radius: 1.5rem;
+}
+
+.profileSection h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: #ccc;
+}
+
+.scoreCard {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 1rem;
+}
+
+.bigScore {
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.scoreLabel {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.interviewItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.intIcon {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.intInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.intType {
+    font-weight: 600;
+}
+
+.intDate {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.intScore {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.timeline {
+    position: relative;
+    padding-left: 20px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.timelineItem {
+    position: relative;
+    padding-bottom: 2rem;
+    padding-left: 1.5rem;
+}
+
+.timelineDot {
+    position: absolute;
+    left: -24px;
+    /* Adjust based on padding + line width */
+    top: 0;
+    width: 10px;
+    height: 10px;
+    background: #333;
+    border-radius: 50%;
+    border: 2px solid #555;
+}
+
+.activeItem .timelineDot {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+}
+
+.timelineTitle {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.timelineDate {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.activeItem .timelineTitle {
+    color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    .profileGrid {
+        grid-template-columns: 1fr;
+    }
+}

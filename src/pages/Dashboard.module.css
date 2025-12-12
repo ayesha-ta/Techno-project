@@ -1,0 +1,276 @@
+/* Dashboard CSS */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+}
+
+.welcomeBanner {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.05));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    padding: 0;
+    border-radius: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+}
+
+.welcomeText {
+    padding: 2rem;
+    flex: 1;
+    z-index: 2;
+}
+
+.welcomeText h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, #fff, #aaa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.welcomeVisual {
+    width: 200px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcomeVisual img {
+    position: absolute;
+    right: -20px;
+    width: 250px;
+    top: -20px;
+    opacity: 0.9;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+    transition: transform 0.5s;
+}
+
+.welcomeBanner:hover .welcomeVisual img {
+    transform: scale(1.05) translateY(-5px);
+}
+
+.sectionTitle {
+    margin-bottom: 1.5rem;
+    color: #888;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+}
+
+.jobCard {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.5rem;
+    border-radius: 1.2rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s;
+}
+
+.jobCard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(59, 130, 246, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.jobHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.companyLogo {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, #222, #111);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: white;
+    margin-right: 1rem;
+}
+
+.jobInfo {
+    flex: 1;
+}
+
+.jobInfo h4 {
+    margin-bottom: 0.3rem;
+    font-size: 1.1rem;
+}
+
+.jobInfo p {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.actionBtn {
+    background: transparent;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.actionBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.tags {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+}
+
+.tag {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.4rem 0.9rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    color: #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.jobFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #666;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1rem;
+}
+
+.applyBtn {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary-color);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    padding: 0.6rem 1.2rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.applyBtn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Widgets */
+.widget {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.8rem;
+    border-radius: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.widget h4 {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+/* Circular Chart */
+.chartCircle {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.circularChart {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 250px;
+}
+
+.circleBg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 2.5;
+}
+
+.circle {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke: var(--accent-color);
+    animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+    0% {
+        stroke-dasharray: 0 100;
+    }
+}
+
+.percentage {
+    fill: white;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 0.5em;
+    text-anchor: middle;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 2rem 0;
+    color: #666;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.calendarIcon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+}
+
+.linkBtn {
+    width: 100%;
+    background: white;
+    border: none;
+    color: black;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.linkBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 1024px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .widgets {
+        display: none;
+    }
+
+    .welcomeVisual {
+        display: none;
+    }
+}

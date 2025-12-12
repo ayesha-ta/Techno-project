@@ -1,0 +1,71 @@
+.section {
+    padding: 6rem 2rem;
+    background: #09090b;
+}
+
+.title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.llmBlock {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.1));
+    border: 1px solid var(--primary-color);
+    padding: 3rem;
+    border-radius: 1.5rem;
+    margin-bottom: 4rem;
+    text-align: center;
+}
+
+.llmTitle {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.llmDesc {
+    color: #ccc;
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.featureGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.featureCard {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--glass-border);
+    transition: transform 0.3s;
+}
+
+.featureCard:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.featureHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-color);
+}
