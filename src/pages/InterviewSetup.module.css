@@ -1,0 +1,102 @@
+.container {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #fff, #aaa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    color: #888;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    padding: 2rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.card.active {
+    background: rgba(var(--primary-rgb), 0.1);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.2);
+}
+
+.icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.card h3 {
+    margin: 0.5rem 0;
+}
+
+.card p {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.settings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.settings select {
+    background: #222;
+    border: 1px solid #444;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+.startBtn {
+    display: block;
+    margin: 0 auto;
+    background: var(--primary-color);
+    color: #0b0f19;
+    border: none;
+    padding: 1rem 3rem;
+    border-radius: 2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.startBtn:disabled {
+    background: #444;
+    color: #888;
+    cursor: not-allowed;
+}
+
+.startBtn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.4);
+}

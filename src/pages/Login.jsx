@@ -2,17 +2,32 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Auth.module.css';
-// Note: You must ensure this image path is correct after generation or move the file.
-// Assuming the generated image will be saved/moved to src/assets/auth_bg.png
 import authBg from '../assets/auth_bg.png';
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState('job-seeker');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        navigate('/dashboard');
+        setError('');
+        setLoading(true);
+
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            navigate('/dashboard');
+        } catch (err) {
+            console.error("Login Error:", err);
+            setError("Invalid email or password.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -46,6 +61,8 @@ const Login = () => {
                     </button>
                 </div>
 
+                {error && <div style={{ color: 'red', marginBottom: '1rem', padding: '0.5rem', background: 'rgba(255,0,0,0.1)', borderRadius: '4px' }}>{error}</div>}
+
                 <motion.form
                     className={styles.form}
                     onSubmit={handleLogin}
@@ -55,14 +72,24 @@ const Login = () => {
                 >
                     <div className={styles.inputGroup}>
                         <label>Email Address</label>
-                        <input type="email" placeholder="name@company.com" required />
+                        <input
+                            type="email"
+                            placeholder="name@company.com"
+                            required
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
                     </div>
                     <div className={styles.inputGroup}>
                         <label>Password</label>
-                        <input type="password" placeholder="••••••••" required />
+                        <input
+                            type="password"
+                            placeholder="••••••••"
+                            required
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                     </div>
-                    <button type="submit" className={styles.submitBtn}>
-                        Sign In as {role === 'job-seeker' ? 'Candidate' : 'Partner'}
+                    <button type="submit" className={styles.submitBtn} disabled={loading}>
+                        {loading ? 'Signing In...' : `Sign In as ${role === 'job-seeker' ? 'Candidate' : 'Partner'}`}
                     </button>
                 </motion.form>
 

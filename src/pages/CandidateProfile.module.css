@@ -1,0 +1,357 @@
+.container {
+    padding: 0;
+    color: white;
+    min-height: 100vh;
+    background: #000;
+}
+
+/* Header Section */
+.heroHeader {
+    position: relative;
+    height: 300px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 0 4rem;
+}
+
+.heroOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 70% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.backLink {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    backdrop-filter: blur(4px);
+}
+
+.backLink:hover {
+    color: white;
+}
+
+.profileCard {
+    display: flex;
+    align-items: flex-end;
+    gap: 2rem;
+    transform: translateY(3rem);
+    width: 100%;
+}
+
+.avatarContainer {
+    position: relative;
+}
+
+.avatar {
+    width: 160px;
+    height: 160px;
+    background: #1e293b;
+    border-radius: 50%;
+    border: 4px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+.verifiedBadge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #10b981;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #000;
+    font-size: 1rem;
+}
+
+.headerInfo {
+    flex: 1;
+    margin-bottom: 1rem;
+}
+
+.nameGroup {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+.nameGroup h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.role {
+    font-size: 1.2rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.primaryBtn {
+    background: white;
+    color: black;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.secondaryBtn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: background 0.2s;
+}
+
+/* Grid Layout */
+.contentGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 6rem 4rem 4rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.sectionTitle {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Readiness Chart */
+.analyticsCard {
+    background: #0f172a;
+    border-radius: 1rem;
+    padding: 2rem;
+    border: 1px solid #1e293b;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.chartContainer {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.circularChart {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.circleBg {
+    fill: none;
+    stroke: #1e293b;
+    stroke-width: 2.5;
+}
+
+.circle {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    transition: stroke-dasharray 1s ease;
+}
+
+.percentage {
+    fill: white;
+    font-size: 0.5rem;
+    text-anchor: middle;
+    font-weight: bold;
+    transform: rotate(90deg) translate(0, 36) rotate(-90deg);
+    /* Counter rotate text */
+    /* SVG text positioning is tricky with rotation, adjusting via JS/CSS logic or simpler SVG structure is better, keeping simple for CSS */
+}
+
+/* simpler text alignment */
+.chartLabel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.chartLabel h2 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.chartLabel span {
+    font-size: 0.7rem;
+    color: #64748b;
+}
+
+/* Interview Cards */
+.interviewGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.holographCard {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.holographCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(60deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+.cardHead {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.cardScore {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+}
+
+.cardFooter {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+    border-left: 2px solid #1e293b;
+}
+
+.timelineItem {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.timelineDot {
+    position: absolute;
+    left: -2.4rem;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    background: #1e293b;
+    border-radius: 50%;
+    border: 2px solid #0f172a;
+}
+
+.activeItem .timelineDot {
+    background: #3b82f6;
+    box-shadow: 0 0 10px #3b82f6;
+}
+
+.timelineContent h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    color: #e2e8f0;
+}
+
+.timelineDate {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+.aboutSection {
+    background: #0f172a;
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid #1e293b;
+}
+
+.aboutSection p {
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+.skillTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.skillTag {
+    background: #1e293b;
+    color: #cbd5e1;
+    padding: 0.4rem 0.8rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.skillTag:hover {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+    color: white;
+}

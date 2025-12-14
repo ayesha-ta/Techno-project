@@ -3,8 +3,19 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Pricing from './pages/Pricing';
+import Universities from './pages/Universities';
 import DashboardLayout from './layouts/DashboardLayout';
 import Dashboard from './pages/Dashboard';
+import AgencyDashboard from './pages/AgencyDashboard';
+import CandidateProfile from './pages/CandidateProfile';
+import ApplicationTracker from './pages/ApplicationTracker';
+import Network from './pages/Network';
+
+import InterviewSetup from './pages/InterviewSetup';
+import InterviewSession from './pages/InterviewSession';
+import InterviewFeedback from './pages/InterviewFeedback';
+import { db } from "./firebase";
 
 function App() {
   return (
@@ -13,15 +24,21 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/pricing" element={<Pricing />} />
 
         {/* Dashboard Routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
-          {/* Placeholder routes for future expansion */}
-          <Route path="jobs" element={<div style={{ padding: '2rem' }}>Jobs Page (Coming Soon)</div>} />
-          <Route path="interview" element={<div style={{ padding: '2rem' }}>Interview Simulator (Coming Soon)</div>} />
-          <Route path="agencies" element={<div style={{ padding: '2rem' }}>Agency Portal (Coming Soon)</div>} />
-          <Route path="universities" element={<div style={{ padding: '2rem' }}>University Portal (Coming Soon)</div>} />
+          <Route path="network" element={<Network />} />
+
+          <Route path="applications" element={<ApplicationTracker />} />
+          <Route path="interview" element={<InterviewSetup />} />
+          <Route path="interview/session" element={<InterviewSession />} />
+          <Route path="interview/feedback" element={<InterviewFeedback />} />
+
+          <Route path="agencies" element={<AgencyDashboard />} />
+          <Route path="candidate/:id" element={<CandidateProfile />} />
+          <Route path="universities" element={<Universities />} />
         </Route>
       </Routes>
     </Router>

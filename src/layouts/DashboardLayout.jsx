@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { FaHome, FaBriefcase, FaRobot, FaUserCircle, FaBell, FaSearch, FaUniversity, FaBuilding } from 'react-icons/fa';
+import { FaHome, FaBriefcase, FaRobot, FaUserCircle, FaBell, FaSearch, FaUniversity, FaBuilding, FaUsers, FaEyeSlash, FaEye } from 'react-icons/fa';
 import styles from './DashboardLayout.module.css';
 
 const DashboardLayout = () => {
     const location = useLocation();
+    const [stealthMode, setStealthMode] = useState(false);
 
     const isActive = (path) => location.pathname === path;
 
@@ -19,9 +20,10 @@ const DashboardLayout = () => {
                     <Link to="/dashboard" className={`${styles.navItem} ${isActive('/dashboard') ? styles.active : ''}`}>
                         <FaHome /> <span>Feed</span>
                     </Link>
-                    <Link to="/dashboard/jobs" className={styles.navItem}>
-                        <FaBriefcase /> <span>Jobs</span>
+                    <Link to="/dashboard/network" className={`${styles.navItem} ${isActive('/dashboard/network') ? styles.active : ''}`}>
+                        <FaUsers /> <span>Network</span>
                     </Link>
+
                     <Link to="/dashboard/interview" className={styles.navItem}>
                         <FaRobot /> <span>Interview Sim</span>
                     </Link>
@@ -33,6 +35,18 @@ const DashboardLayout = () => {
                     <Link to="/dashboard/universities" className={styles.navItem}>
                         <FaUniversity /> <span>Universities</span>
                     </Link>
+
+                    {/* Stealth Mode Toggle */}
+                    <div className={styles.menuLabel} style={{ marginTop: '2rem' }}>Privacy</div>
+                    <div
+                        className={styles.navItem}
+                        onClick={() => setStealthMode(!stealthMode)}
+                        style={{ cursor: 'pointer', background: stealthMode ? 'rgba(139, 92, 246, 0.2)' : 'transparent', border: stealthMode ? '1px solid #8b5cf6' : 'none' }}
+                    >
+                        {stealthMode ? <FaEyeSlash /> : <FaEye />}
+                        <span>Stealth Mode</span>
+                        {stealthMode && <span style={{ marginLeft: 'auto', fontSize: '0.7rem', background: '#8b5cf6', padding: '0.2rem 0.5rem', borderRadius: '0.3rem' }}>ON</span>}
+                    </div>
                 </nav>
 
                 <div className={styles.userProfile}>

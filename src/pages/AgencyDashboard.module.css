@@ -1,17 +1,21 @@
 .container {
-    padding: 1rem;
+    padding: 2rem;
+    color: white;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     margin-bottom: 2rem;
 }
 
 .header h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin-bottom: 0.5rem;
+    background: linear-gradient(to right, #fff, #aaa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .header p {
@@ -19,18 +23,18 @@
 }
 
 .postBtn {
-    background: var(--primary-color);
+    background: var(--primary-color, #3b82f6);
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
-    border-radius: 0.8rem;
-    font-weight: 600;
+    border-radius: 2rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: transform 0.2s;
 }
 
 .postBtn:hover {
-    background: var(--secondary-color);
+    transform: scale(1.05);
 }
 
 .controls {
@@ -41,13 +45,14 @@
 
 .searchBar {
     flex: 1;
+    background: #111;
+    border: 1px solid #333;
+    padding: 0.8rem 1.5rem;
+    border-radius: 2rem;
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    padding: 0.8rem 1.2rem;
-    border-radius: 0.8rem;
+    gap: 1rem;
+    color: #888;
 }
 
 .searchBar input {
@@ -56,18 +61,19 @@
     color: white;
     width: 100%;
     outline: none;
+    font-size: 1rem;
 }
 
 .filterBtn {
+    background: #111;
+    border: 1px solid #333;
+    color: white;
+    padding: 0 1.5rem;
+    border-radius: 2rem;
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    color: white;
-    padding: 0 1.5rem;
-    border-radius: 0.8rem;
-    cursor: pointer;
 }
 
 .grid {
@@ -78,15 +84,15 @@
 
 .card {
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
     padding: 1.5rem;
-    border-radius: 1.2rem;
-    transition: transform 0.2s;
+    transition: transform 0.2s, border-color 0.2s;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: var(--primary-color);
+    border-color: var(--primary-color, #3b82f6);
 }
 
 .cardHeader {
@@ -99,23 +105,24 @@
 .avatar {
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #333, #111);
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    font-size: 1.2rem;
 }
 
 .badge {
     background: rgba(16, 185, 129, 0.1);
     color: #10b981;
-    padding: 0.3rem 0.6rem;
+    padding: 0.3rem 0.8rem;
     border-radius: 1rem;
     font-size: 0.8rem;
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.3rem;
     border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
@@ -132,8 +139,8 @@
 }
 
 .skill {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 0.3rem 0.6rem;
+    background: #222;
+    padding: 0.3rem 0.8rem;
     border-radius: 0.5rem;
     font-size: 0.8rem;
     color: #ccc;
@@ -142,277 +149,126 @@
 .stats {
     display: flex;
     justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid #222;
     margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats div {
+    display: flex;
+    flex-direction: column;
 }
 
 .label {
-    display: block;
     font-size: 0.8rem;
     color: #666;
     margin-bottom: 0.2rem;
 }
 
 .value {
-    font-weight: 600;
+    font-weight: bold;
 }
 
 .valueHighlight {
-    font-weight: 600;
-    color: var(--accent-color);
+    font-weight: bold;
+    color: #10b981;
 }
 
 .viewBtn {
     display: block;
     text-align: center;
-    background: rgba(255, 255, 255, 0.05);
+    background: #222;
     color: white;
-    text-decoration: none;
     padding: 0.8rem;
-    border-radius: 0.8rem;
-    font-weight: 600;
-    transition: all 0.2s;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.2s;
 }
 
 .viewBtn:hover {
-    background: white;
-    color: black;
+    background: #333;
 }
 
-/* Profile Page */
-.profileContainer {
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.backLink {
+/* Modal Styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
     display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(8px);
+}
+
+.modalContent {
+    background: #0f172a;
+    /* Darker background */
+    border: 1px solid #334155;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.inputGroup {
+    margin-bottom: 1.5rem;
+}
+
+.inputGroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.modalInput {
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.modalInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.submitBtn {
+    width: 100%;
+    background: #3b82f6;
+    color: white;
+    padding: 1rem;
+    border: none;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    color: #888;
-    text-decoration: none;
-    margin-bottom: 2rem;
-    transition: color 0.2s;
 }
 
-.backLink:hover {
-    color: white;
+.submitBtn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
 }
 
-.profileHeader {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 3rem;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
-    padding: 2rem;
-    border-radius: 1.5rem;
-    border: 1px solid var(--glass-border);
-}
-
-.profileAvatarLarge {
-    width: 100px;
-    height: 100px;
-    background: #222;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-.profileInfo {
-    flex: 1;
-}
-
-.nameRow {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-.verifiedBadge {
-    background: var(--primary-color);
-    color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 1rem;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-}
-
-.profileRole {
-    font-size: 1.2rem;
-    color: #aaa;
-    margin-bottom: 1rem;
-}
-
-.bio {
-    color: #888;
-    line-height: 1.6;
-}
-
-.actionParams {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.contactBtn {
-    background: white;
-    color: black;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.saveBtn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border-radius: 0.8rem;
-    cursor: pointer;
-}
-
-.profileGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-}
-
-.profileSection {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--glass-border);
-    padding: 2rem;
-    border-radius: 1.5rem;
-}
-
-.profileSection h3 {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    color: #ccc;
-}
-
-.scoreCard {
-    text-align: center;
-    margin-bottom: 2rem;
-    padding: 2rem;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 1rem;
-}
-
-.bigScore {
-    font-size: 4rem;
-    font-weight: 800;
-    color: var(--accent-color);
-    line-height: 1;
-    margin-bottom: 0.5rem;
-}
-
-.scoreLabel {
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.interviewItem {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 0.8rem;
-    margin-bottom: 0.8rem;
-}
-
-.intIcon {
-    font-size: 1.2rem;
-    color: #555;
-}
-
-.intInfo {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.intType {
-    font-weight: 600;
-}
-
-.intDate {
-    font-size: 0.8rem;
-    color: #666;
-}
-
-.intScore {
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-.timeline {
-    position: relative;
-    padding-left: 20px;
-}
-
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.timelineItem {
-    position: relative;
-    padding-bottom: 2rem;
-    padding-left: 1.5rem;
-}
-
-.timelineDot {
-    position: absolute;
-    left: -24px;
-    /* Adjust based on padding + line width */
-    top: 0;
-    width: 10px;
-    height: 10px;
-    background: #333;
-    border-radius: 50%;
-    border: 2px solid #555;
-}
-
-.activeItem .timelineDot {
-    background: var(--accent-color);
-    border-color: var(--accent-color);
-    box-shadow: 0 0 10px var(--accent-color);
-}
-
-.timelineTitle {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.2rem;
-}
-
-.timelineDate {
-    font-size: 0.8rem;
-    color: #666;
-}
-
-.activeItem .timelineTitle {
-    color: var(--accent-color);
-}
-
-@media (max-width: 768px) {
-    .profileGrid {
-        grid-template-columns: 1fr;
-    }
+.submitBtn:disabled {
+    background: #334155;
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.7;
 }

@@ -1,0 +1,368 @@
+/* Existing Styles remain same, adding new ones at bottom or appropriate places */
+.container {
+    display: flex;
+    height: calc(100vh - 80px);
+    /* Adjust for navbar */
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.mainArea {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.chatWindow {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.message {
+    display: flex;
+    gap: 1rem;
+    max-width: 80%;
+}
+
+.message.ai {
+    align-self: flex-start;
+}
+
+.message.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.message.ai .avatar {
+    background: var(--primary-color);
+    color: black;
+}
+
+.bubble {
+    background: #2a2a2a;
+    padding: 1rem;
+    border-radius: 1rem;
+    line-height: 1.5;
+}
+
+.message.ai .bubble {
+    border-top-left-radius: 0;
+}
+
+.message.user .bubble {
+    background: var(--primary-color);
+    color: black;
+    border-top-right-radius: 0;
+}
+
+.inputArea {
+    padding: 1.5rem;
+    background: #1a1a1a;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.videoGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    height: 350px;
+    /* Taller for better view */
+    padding: 1rem;
+    background: #000;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+
+.aiVideo,
+.userVideo {
+    width: 100%;
+    height: 100%;
+    background: #111;
+    border-radius: 1rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #333;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.aiAvatarWrapper {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--primary-color), #059669);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.aiPulse {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--primary-color);
+    opacity: 0.3;
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.videoElement {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+.aiLabel,
+.userLabel {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    color: white;
+    backdrop-filter: blur(4px);
+    z-index: 10;
+}
+
+.cameraControls {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 10;
+}
+
+.cameraControls button {
+    background: rgba(220, 38, 38, 0.9);
+    /* Red for 'End/Pause' feel or distinct action */
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.cameraControls button:hover {
+    transform: scale(1.1);
+}
+
+.inputArea input {
+    flex: 1;
+    background: #333;
+    border: none;
+    padding: 1rem;
+    border-radius: 2rem;
+    color: white;
+}
+
+.micBtn,
+.sendBtn {
+    background: #333;
+    border: none;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+}
+
+.sendBtn {
+    background: var(--primary-color);
+    color: black;
+}
+
+.micBtn.recording {
+    background: #ef4444;
+    animation: pulse 1s infinite;
+}
+
+.sidebar {
+    width: 300px;
+    background: #111;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.feedbackCard {
+    background: #222;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.feedbackCard h4 {
+    margin: 0 0 0.5rem 0;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.meter {
+    height: 6px;
+    background: #444;
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+}
+
+.endBtn {
+    margin-top: auto;
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.lobbyContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.lobbyCard {
+    background: #111;
+    padding: 3rem;
+    border-radius: 1rem;
+    border: 1px solid #333;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.lobbyCard h2 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.lobbyNote {
+    color: #888;
+    margin-bottom: 2rem;
+}
+
+.joinBtn {
+    background: #10b981;
+    /* Hardcoded green since var might be missing */
+    color: black;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    transition: transform 0.2s;
+}
+
+.joinBtn:hover {
+    transform: scale(1.05);
+}
+
+.backBtn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #aaa;
+    padding: 0.8rem 2rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.backBtn:hover {
+    border-color: white;
+    color: white;
+}
+
+.audioWave {
+    display: flex;
+    gap: 5px;
+    height: 30px;
+    align-items: flex-end;
+}
+
+.bar {
+    width: 6px;
+    background: #10b981;
+    animation: wave 1s infinite ease-in-out;
+}
+
+.bar:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.bar:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+@keyframes wave {
+
+    0%,
+    100% {
+        height: 10px;
+    }
+
+    50% {
+        height: 30px;
+    }
+}

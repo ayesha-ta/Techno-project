@@ -1,0 +1,155 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal {
+    background: #1a1a1a;
+    border: 1px solid var(--glass-border);
+    width: 90%;
+    max-width: 500px;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.header h3 {
+    margin: 0;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.jobPreview {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.jobPreview h4 {
+    margin: 0;
+    margin-bottom: 0.2rem;
+    color: white;
+}
+
+.jobPreview p {
+    margin: 0;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.progressArea {
+    margin-bottom: 2rem;
+}
+
+.progressBar {
+    height: 6px;
+    background: #333;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+.stepsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stepItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+    opacity: 0.5;
+}
+
+.stepItem.active {
+    opacity: 1;
+    background: rgba(var(--primary-rgb), 0.1);
+    border: 1px solid var(--primary-color);
+}
+
+.stepItem.completed {
+    opacity: 1;
+    color: #10b981;
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.successMessage {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.successIcon {
+    font-size: 3rem;
+    color: #10b981;
+    margin-bottom: 0.5rem;
+}
+
+.trackBtn {
+    background: var(--primary-color);
+    color: #0b0f19;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 100%;
+}
