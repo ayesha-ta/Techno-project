@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerAI Promo Animation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0f172a;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            position: absolute;
+            opacity: 0;
+            text-align: center;
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation-fill-mode: forwards;
+        }
+
+        /* Gradient Text */
+        h1 {
+            font-size: 5rem;
+            margin: 0;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-top: 1rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            width: 400px;
+            margin: 1rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            transform: translateY(50px);
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .icon {
+            font-size: 3rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        /* Keyframes for the sequence */
+
+        /* Scene 1: Intro */
+        .scene-1 {
+            animation: flow1 4s ease-in-out forwards;
+        }
+
+        @keyframes flow1 {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            90% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Scene 2: The Problem */
+        .scene-2 {
+            animation: flow2 4s ease-in-out 3.5s forwards;
+        }
+
+        @keyframes flow2 {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+
+        /* Scene 3: The Solution */
+        .scene-3 {
+            animation: flow3 6s ease-in-out 7s forwards;
+        }
+
+        @keyframes flow3 {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Feature Cards Animation */
+        .f-card-1 {
+            animation: popIn 0.5s ease-out 7.5s forwards;
+        }
+
+        .f-card-2 {
+            animation: popIn 0.5s ease-out 8.0s forwards;
+        }
+
+        .f-card-3 {
+            animation: popIn 0.5s ease-out 8.5s forwards;
+        }
+
+        .f-card-4 {
+            animation: popIn 0.5s ease-out 9.0s forwards;
+        }
+
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scene 4: Call to Action */
+        .scene-4 {
+            animation: flow4 5s ease-in-out 12.5s forwards;
+        }
+
+        @keyframes flow4 {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .url-box {
+            background: linear-gradient(45deg, #3b82f6, #ec4899);
+            padding: 1rem 3rem;
+            border-radius: 3rem;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 2rem;
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(236, 72, 153, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(236, 72, 153, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Scene 1: Logo -->
+        <div class="slide scene-1">
+            <h1>CareerAI Agent</h1>
+            <h2>The Future of Job Hunting 🚀</h2>
+        </div>
+
+        <!-- Scene 2: Problem -->
+        <div class="slide scene-2">
+            <h1 style="color: #ef4444; -webkit-text-fill-color: initial; background: none;">🛑 Stop Applying Blindly
+            </h1>
+            <h2>Applying to 100 jobs & getting 0 replies?</h2>
+        </div>
+
+        <!-- Scene 3: Features -->
+        <div class="slide scene-3">
+            <h1 style="font-size: 3rem; margin-bottom: 2rem;">Meet Your AI Co-Pilot 🤖</h1>
+            <div class="grid">
+                <div class="card f-card-1">
+                    <div class="icon">🎯</div>
+                    <div style="text-align: left;">
+                        <h3>Smart Matching</h3>
+                        <p>Jobs matched to YOUR skills</p>
+                    </div>
+                </div>
+                <div class="card f-card-2">
+                    <div class="icon">💰</div>
+                    <div style="text-align: left;">
+                        <h3>Salary Negotiation</h3>
+                        <p>Practice getting paid more</p>
+                    </div>
+                </div>
+                <div class="card f-card-3">
+                    <div class="icon">🌐</div>
+                    <div style="text-align: left;">
+                        <h3>Smart Network</h3>
+                        <p>AI-curated connections</p>
+                    </div>
+                </div>
+                <div class="card f-card-4">
+                    <div class="icon">🕵️</div>
+                    <div style="text-align: left;">
+                        <h3>Stealth Mode</h3>
+                        <p>Browse privately for FREE</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scene 4: CTA -->
+        <div class="slide scene-4">
+            <h2>Ready to upgrade your career?</h2>
+            <div class="url-box">Try it LIVE ⚡</div>
+            <h2 style="margin-top: 2rem; color: #3b82f6;">https://techno-project-three.vercel.app</h2>
+        </div>
+    </div>
+
+    <!-- ProgressBar -->
+    <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 5px; background: #334155;">
+        <div style="width: 0%; height: 100%; background: #3b82f6; animation: progress 17s linear forwards;"></div>
+    </div>
+    <style>
+        @keyframes progress {
+            to {
+                width: 100%;
+            }
+        }
+    </style>
+</body>
+
+</html>

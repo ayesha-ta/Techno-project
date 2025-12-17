@@ -6,6 +6,7 @@ import authBg from '../assets/auth_bg.png';
 import { auth, db } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { ref, set } from 'firebase/database';
+import { useUser } from '../context/UserContext';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -13,6 +14,8 @@ const Signup = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const { login } = useUser();
 
     // Explicit handlers
     const handleName = (e) => setFormData(prev => ({ ...prev, name: e.target.value }));
@@ -30,14 +33,18 @@ const Signup = () => {
             const user = userCredential.user;
 
             // 2. Store User Data in Realtime Database
-            await set(ref(db, 'users/' + user.uid), {
+            const userData = {
                 name: formData.name,
                 email: formData.email,
                 role: role,
+                uid: user.uid,
                 createdAt: new Date().toISOString()
-            });
+            };
+
+            await set(ref(db, 'users/' + user.uid), userData);
 
             console.log("User stored in RTDB!", user.uid);
+            login(userData); // Store in context
             navigate('/dashboard');
         } catch (err) {
             console.error("Signup Error:", err);

@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { FaHome, FaBriefcase, FaRobot, FaUserCircle, FaBell, FaSearch, FaUniversity, FaBuilding, FaUsers, FaEyeSlash, FaEye } from 'react-icons/fa';
 import styles from './DashboardLayout.module.css';
+import { useUser } from '../context/UserContext';
 
 const DashboardLayout = () => {
+    const { user } = useUser();
     const location = useLocation();
     const [stealthMode, setStealthMode] = useState(false);
 
@@ -50,10 +52,10 @@ const DashboardLayout = () => {
                 </nav>
 
                 <div className={styles.userProfile}>
-                    <div className={styles.avatar}>AT</div>
+                    <div className={styles.avatar}>{user?.name ? user.name.charAt(0).toUpperCase() : 'U'}</div>
                     <div className={styles.userInfo}>
-                        <div className={styles.userName}>Ayesha Tariq</div>
-                        <div className={styles.userRole}>Job Seeker</div>
+                        <div className={styles.userName}>{user?.name || 'User'}</div>
+                        <div className={styles.userRole}>{user?.role === 'partner' ? 'Recruiter' : 'Job Seeker'}</div>
                     </div>
                 </div>
             </aside>

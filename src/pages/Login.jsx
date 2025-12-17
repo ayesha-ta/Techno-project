@@ -5,6 +5,9 @@ import styles from './Auth.module.css';
 import authBg from '../assets/auth_bg.png';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { ref, get } from 'firebase/database';
+import { db } from '../firebase';
+import { useUser } from '../context/UserContext';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -14,14 +17,30 @@ const Login = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const { login } = useUser();
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            navigate('/dashboard');
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Fetch user name from Realtime Database
+            const userRef = ref(db, 'users/' + user.uid);
+            const snapshot = await get(userRef);
+
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                login(userData); // Store in context
+                navigate('/dashboard');
+            } else {
+                // Fallback if data missing
+                login({ name: email.split('@')[0], email: email });
+                navigate('/dashboard');
+            }
         } catch (err) {
             console.error("Login Error:", err);
             setError("Invalid email or password.");

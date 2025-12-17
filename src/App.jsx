@@ -16,32 +16,35 @@ import InterviewSetup from './pages/InterviewSetup';
 import InterviewSession from './pages/InterviewSession';
 import InterviewFeedback from './pages/InterviewFeedback';
 import { db } from "./firebase";
+import { UserProvider } from './context/UserContext';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/pricing" element={<Pricing />} />
+    <UserProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/pricing" element={<Pricing />} />
 
-        {/* Dashboard Routes */}
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="network" element={<Network />} />
+          {/* Dashboard Routes */}
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="network" element={<Network />} />
 
-          <Route path="applications" element={<ApplicationTracker />} />
-          <Route path="interview" element={<InterviewSetup />} />
-          <Route path="interview/session" element={<InterviewSession />} />
-          <Route path="interview/feedback" element={<InterviewFeedback />} />
+            <Route path="applications" element={<ApplicationTracker />} />
+            <Route path="interview" element={<InterviewSetup />} />
+            <Route path="interview/session" element={<InterviewSession />} />
+            <Route path="interview/feedback" element={<InterviewFeedback />} />
 
-          <Route path="agencies" element={<AgencyDashboard />} />
-          <Route path="candidate/:id" element={<CandidateProfile />} />
-          <Route path="universities" element={<Universities />} />
-        </Route>
-      </Routes>
-    </Router>
+            <Route path="agencies" element={<AgencyDashboard />} />
+            <Route path="candidate/:id" element={<CandidateProfile />} />
+            <Route path="universities" element={<Universities />} />
+          </Route>
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 }
 
