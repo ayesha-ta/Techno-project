@@ -111,7 +111,7 @@ const Dashboard = () => {
                     animate={{ opacity: 1, scale: 1 }}
                 >
                     <div className={styles.welcomeText}>
-                        <h3>Welcome back, {user?.name || 'Candidate'}! 👋</h3>
+                        <h3>{user?.name ? `Hello, ${user.name}!` : 'Welcome to CareerAI!'} 👋</h3>
                         <p>
                             {resumeUploaded
                                 ? `We found ${displayedJobs.length} jobs matching your skills: ${userSkills.join(', ')}.`
