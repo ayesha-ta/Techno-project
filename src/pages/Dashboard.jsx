@@ -10,46 +10,43 @@ import { useUser } from '../context/UserContext';
 const JobCard = ({ title, company, location, type, posted, tags, match, delay, onApply, onPrep }) => (
     <motion.div
         className={styles.jobCard}
-        const JobCard= ({ title, company, location, type, posted, tags, match, delay, onApply, onPrep }) => (
-            <motion.div
-                className={styles.jobCard}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: delay }}
-            >
-                <div className={styles.jobHeader}>
-                    <div className={styles.companyLogo}>{company[0]}</div>
-                    <div className={styles.jobInfo}>
-                        <h4>{title}</h4>
-                        <p>{company} • {location}</p>
-                    </div>
-                    <button className={styles.actionBtn}><FaBookmark /></button>
-                </div>
-                <div className={styles.tags}>
-                    <span className={styles.tag}>{type}</span>
-                    {tags && tags.map(tag => <span key={tag} className={styles.tag}>{tag}</span>)}
-                    <span className={styles.matchScore}>{match}% Match</span>
-                </div>
-                <div className={styles.jobFooter}>
-                    <span>{posted}</span>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <button
-                            className={styles.secondaryBtn}
-                            onClick={() => onPrep && onPrep(title)}
-                            style={{ padding: '0.5rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '0.5rem', color: 'white', cursor: 'pointer' }}
-                        >
-                            <FaMicrophone /> Prep
-                        </button>
-                        <button
-                            className={styles.applyBtn}
-                            onClick={() => onApply && onApply({ title, company })}
-                        >
-                            Easy Apply
-                        </button>
-                    </div>
-                </div>
-            </motion.div>
-        );
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: delay }}
+    >
+        <div className={styles.jobHeader}>
+            <div className={styles.companyLogo}>{company[0]}</div>
+            <div className={styles.jobInfo}>
+                <h4>{title}</h4>
+                <p>{company} • {location}</p>
+            </div>
+            <button className={styles.actionBtn}><FaBookmark /></button>
+        </div>
+        <div className={styles.tags}>
+            <span className={styles.tag}>{type}</span>
+            {tags && tags.map(tag => <span key={tag} className={styles.tag}>{tag}</span>)}
+            <span className={styles.matchScore}>{match}% Match</span>
+        </div>
+        <div className={styles.jobFooter}>
+            <span>{posted}</span>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button
+                    className={styles.secondaryBtn}
+                    onClick={() => onPrep && onPrep(title)}
+                    style={{ padding: '0.5rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '0.5rem', color: 'white', cursor: 'pointer' }}
+                >
+                    <FaMicrophone /> Prep
+                </button>
+                <button
+                    className={styles.applyBtn}
+                    onClick={() => onApply && onApply({ title, company })}
+                >
+                    Easy Apply
+                </button>
+            </div>
+        </div>
+    </motion.div>
+);
 
 const Dashboard = () => {
     const { user } = useUser();
