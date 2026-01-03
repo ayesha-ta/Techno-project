@@ -132,6 +132,12 @@
     animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
+.aiPulse.thinking {
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    background: #f59e0b;
+    /* Orange for thinking */
+}
+
 .videoElement {
     width: 100%;
     height: 100%;
@@ -364,5 +370,67 @@
 
     50% {
         height: 30px;
+    }
+}
+
+/* Audio Only Mode Styles */
+.modeBtn {
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    transition: all 0.2s;
+}
+
+.modeBtnActive {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+.audioPlaceholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1e293b;
+    color: #94a3b8;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.audioAvatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Streaming Cursor */
+.cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: var(--primary-color);
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
     }
 }

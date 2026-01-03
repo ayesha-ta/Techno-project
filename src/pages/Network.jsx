@@ -1,70 +1,134 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useDebounce from '../hooks/useDebounce';
 import { motion } from 'framer-motion';
-import { FaUserPlus, FaRobot, FaBriefcase, FaGraduationCap, FaStar } from 'react-icons/fa';
-import styles from './Dashboard.module.css'; // Reuse dashboard styles for consistency
+import { FaUserPlus, FaRobot, FaSearch, FaUserCheck, FaStar } from 'react-icons/fa';
+import styles from './Dashboard.module.css';
 
-const NetworkCard = ({ person, index }) => (
-    <motion.div
-        className={styles.jobCard} // Reusing card style
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.1 }}
-        style={{ display: 'flex', flexDirection: 'column', height: '100%', border: '1px solid rgba(59, 130, 246, 0.2)' }}
-    >
-        <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-            <div style={{
-                width: '60px', height: '60px', borderRadius: '50%', background: '#334155',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', fontWeight: 'bold', color: '#cbd5e1'
-            }}>
-                {person.initials}
-            </div>
-            <div>
-                <h4 style={{ margin: '0 0 0.2rem 0', fontSize: '1.1rem' }}>{person.name}</h4>
-                <p style={{ margin: 0, fontSize: '0.9rem', color: '#94a3b8' }}>{person.role}</p>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>{person.company}</p>
-            </div>
-        </div>
+const NetworkCard = ({ person, index, onConnect }) => {
+    // Determine card styling based on connection status
+    const isConnected = person.isConnected;
 
-        <div style={{ background: 'rgba(16, 185, 129, 0.1)', padding: '0.8rem', borderRadius: '0.5rem', marginBottom: '1rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: '#10b981', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                <FaRobot /> AI Reason: {person.matchScore}% Match
+    return (
+        <motion.div
+            className={styles.jobCard}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            style={{
+                display: 'flex', flexDirection: 'column', height: '100%',
+                border: isConnected ? '1px solid #10b981' : '1px solid rgba(59, 130, 246, 0.2)',
+                position: 'relative'
+            }}
+        >
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                <img
+                    src={person.picture.large}
+                    alt={person.name.first}
+                    style={{
+                        width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover'
+                    }}
+                />
+                <div>
+                    <h4 style={{ margin: '0 0 0.2rem 0', fontSize: '1.1rem' }}>
+                        {person.name.first} {person.name.last}
+                    </h4>
+                    <p style={{ margin: 0, fontSize: '0.9rem', color: '#94a3b8' }}>
+                        {person.location.city}, {person.location.country}
+                    </p>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>
+                        {person.email}
+                    </p>
+                </div>
             </div>
-            <p style={{ margin: 0, fontSize: '0.85rem', color: '#e2e8f0', lineHeight: '1.4' }}>
-                "{person.reason}"
-            </p>
-        </div>
 
-        <div style={{ marginTop: 'auto', display: 'flex', gap: '0.5rem' }}>
-            <button className={styles.applyBtn} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                <FaUserPlus /> Connect
-            </button>
-            <button className={styles.secondaryBtn} style={{ padding: '0.5rem' }}>
-                Profile
-            </button>
-        </div>
-    </motion.div>
-);
+            {/* Simulated AI Match Logic */}
+            <div style={{ background: 'rgba(16, 185, 129, 0.1)', padding: '0.8rem', borderRadius: '0.5rem', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: '#10b981', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                    <FaRobot /> AI Match: {Math.floor(Math.random() * (99 - 75) + 75)}%
+                </div>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: '#e2e8f0', lineHeight: '1.4' }}>
+                    "Based on their location and profile, this person could be a valuable connection for your network."
+                </p>
+            </div>
+
+            <div style={{ marginTop: 'auto', display: 'flex', gap: '0.5rem' }}>
+                <button
+                    className={isConnected ? styles.secondaryBtn : styles.applyBtn}
+                    onClick={() => onConnect(person.login.uuid)}
+                    style={{
+                        flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
+                        background: isConnected ? 'transparent' : ''
+                    }}
+                >
+                    {isConnected ? <><FaUserCheck /> Connected</> : <><FaUserPlus /> Connect</>}
+                </button>
+                <button className={styles.secondaryBtn} style={{ padding: '0.5rem' }}>
+                    Profile
+                </button>
+            </div>
+        </motion.div>
+    );
+};
 
 const Network = () => {
-    const [filter, setFilter] = useState('recommended');
+    const [users, setUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState('all'); // all, connected
 
-    const recommended = [
-        { id: 1, name: "David Kim", initials: "DK", role: "Sr. Frontend Engineer", company: "Google", matchScore: 98, reason: "Works at your dream company and shares your React expertise." },
-        { id: 2, name: "Sarah Jenkins", initials: "SJ", role: "Product Manager", company: "Meta", matchScore: 85, reason: "Can offer insights into PM-Dev collaboration which is a skill you wanted to improve." },
-        { id: 3, name: "Dr. Emily Wong", initials: "EW", role: "AI Researcher", company: "OpenAI", matchScore: 92, reason: "Her research aligns with your recent certifcations." },
-    ];
+    // Debounce search to prevent API spam
+    const debouncedSearch = useDebounce(searchQuery, 800);
 
-    const mentors = [
-        { id: 4, name: "James Carter", initials: "JC", role: "CTO", company: "TechStart", matchScore: 95, reason: "Perfect mentor for your path to Tech Lead." },
-        { id: 5, name: "Linda Ray", initials: "LR", role: "VP of Engineering", company: "CloudCorp", matchScore: 90, reason: "Experienced leader in the sector you are applying to." }
-    ];
+    useEffect(() => {
+        const fetchUsers = async () => {
+            setLoading(true);
+            try {
+                // If search is empty, use a default seed 'careerai'
+                // If searching, use the search term as seed to get deterministic "search results"
+                const seed = debouncedSearch ? debouncedSearch.replace(/\s/g, '') : 'careerai';
 
-    const alumni = [
-        { id: 6, name: "Marcus Johnson", initials: "MJ", role: "Software Architect", company: "Alumni Network", matchScore: 88, reason: "Graduated from your university 3 years ago. Great for networking." },
-        { id: 7, name: "Chloe Davis", initials: "CD", role: "Data Scientist", company: "TechFlow", matchScore: 82, reason: "Fellow alumni working in your city." }
-    ];
+                // Fetch random users to simulate a professional network
+                // Using seed makes it feel like consistent search results
+                const response = await fetch(`https://randomuser.me/api/?results=12&nat=us,gb,ca&seed=${seed}`);
+                const data = await response.json();
 
-    const data = filter === 'mentors' ? mentors : filter === 'alumni' ? alumni : recommended;
+                const enhancedData = data.results.map(user => ({
+                    ...user,
+                    isConnected: false // Add local state
+                }));
+
+                setUsers(enhancedData);
+                setFilteredUsers(enhancedData);
+                setLoading(false);
+            } catch (error) {
+                console.error("Failed to fetch users", error);
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
+    }, [debouncedSearch]);
+
+    // Handle Local Filtering (only connection status, not search text anymore)
+    useEffect(() => {
+        let result = users;
+
+        if (filter === 'connected') {
+            result = result.filter(user => user.isConnected);
+        }
+
+        setFilteredUsers(result);
+    }, [users, filter]);
+
+    const handleConnect = (uuid) => {
+        setUsers(prevUsers => prevUsers.map(user => {
+            if (user.login.uuid === uuid) {
+                return { ...user, isConnected: !user.isConnected };
+            }
+            return user;
+        }));
+    };
 
     return (
         <div className={styles.dashboard}>
@@ -80,44 +144,73 @@ const Network = () => {
                 </div>
             </motion.div>
 
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
-                <button
-                    onClick={() => setFilter('recommended')}
-                    style={{
-                        padding: '0.6rem 1.2rem', borderRadius: '2rem', border: 'none', cursor: 'pointer', fontWeight: 'bold',
-                        background: filter === 'recommended' ? '#3b82f6' : 'rgba(255,255,255,0.1)',
-                        color: filter === 'recommended' ? 'white' : '#94a3b8'
-                    }}
-                >
-                    Recommended
-                </button>
-                <button
-                    onClick={() => setFilter('mentors')}
-                    style={{
-                        padding: '0.6rem 1.2rem', borderRadius: '2rem', border: 'none', cursor: 'pointer', fontWeight: 'bold',
-                        background: filter === 'mentors' ? '#8b5cf6' : 'rgba(255,255,255,0.1)',
-                        color: filter === 'mentors' ? 'white' : '#94a3b8'
-                    }}
-                >
-                    Find Mentors
-                </button>
-                <button
-                    onClick={() => setFilter('alumni')}
-                    style={{
-                        padding: '0.6rem 1.2rem', borderRadius: '2rem', border: 'none', cursor: 'pointer', fontWeight: 'bold',
-                        background: filter === 'alumni' ? '#10b981' : 'rgba(255,255,255,0.1)',
-                        color: filter === 'alumni' ? 'white' : '#94a3b8'
-                    }}
-                >
-                    Alumni
-                </button>
+            {/* Search and Filter Bar */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
+                <div style={{ position: 'relative' }}>
+                    <FaSearch style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                    <input
+                        type="text"
+                        placeholder="Search people by name, city..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '1rem 1rem 1rem 3rem',
+                            borderRadius: '1rem',
+                            background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            color: 'white',
+                            fontSize: '1rem'
+                        }}
+                    />
+                </div>
+
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                    <button
+                        onClick={() => setFilter('all')}
+                        style={{
+                            padding: '0.6rem 1.2rem', borderRadius: '2rem', border: 'none', cursor: 'pointer', fontWeight: 'bold',
+                            background: filter === 'all' ? '#3b82f6' : 'rgba(255,255,255,0.1)',
+                            color: filter === 'all' ? 'white' : '#94a3b8'
+                        }}
+                    >
+                        All Recommendations
+                    </button>
+                    <button
+                        onClick={() => setFilter('connected')}
+                        style={{
+                            padding: '0.6rem 1.2rem', borderRadius: '2rem', border: 'none', cursor: 'pointer', fontWeight: 'bold',
+                            background: filter === 'connected' ? '#10b981' : 'rgba(255,255,255,0.1)',
+                            color: filter === 'connected' ? 'white' : '#94a3b8'
+                        }}
+                    >
+                        My Connections ({users.filter(u => u.isConnected).length})
+                    </button>
+                </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
-                {data.map((person, index) => (
-                    <NetworkCard key={person.id} person={person} index={index} />
-                ))}
-            </div>
+            {loading ? (
+                <div style={{ textAlign: 'center', color: '#94a3b8', marginTop: '3rem' }}>
+                    Loading potential matches...
+                </div>
+            ) : (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                    {filteredUsers.length > 0 ? (
+                        filteredUsers.map((person, index) => (
+                            <NetworkCard
+                                key={person.login.uuid}
+                                person={person}
+                                index={index}
+                                onConnect={handleConnect}
+                            />
+                        ))
+                    ) : (
+                        <div style={{ gridColumn: '1 / -1', textAlign: 'center', color: '#64748b', padding: '3rem' }}>
+                            No users found matching "{searchQuery}"
+                        </div>
+                    )}
+                </div>
+            )}
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}

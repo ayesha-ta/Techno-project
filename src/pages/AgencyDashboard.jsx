@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaSearch, FaFilter, FaStar, FaCheckCircle, FaTimes, FaRobot } from 'react-icons/fa';
 import styles from './AgencyDashboard.module.css';
+import { useUser } from '../context/UserContext';
 
 const MOCK_CANDIDATES = [
     {
@@ -38,10 +39,16 @@ const MOCK_CANDIDATES = [
 ];
 
 const AgencyDashboard = () => {
+    const { addJob } = useUser();
     const [searchQuery, setSearchQuery] = useState("");
     const [showPostModal, setShowPostModal] = useState(false);
     const [isPosting, setIsPosting] = useState(false);
     const [postSuccess, setPostSuccess] = useState(false);
+
+    // Form inputs
+    const [jobTitle, setJobTitle] = useState('');
+    const [jobSkills, setJobSkills] = useState('');
+    const [budget, setBudget] = useState('');
 
     const filteredCandidates = MOCK_CANDIDATES.filter(c =>
         c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -52,13 +59,29 @@ const AgencyDashboard = () => {
     const handlePostJob = (e) => {
         e.preventDefault();
         setIsPosting(true);
+
+        const newJob = {
+            id: Date.now(),
+            title: jobTitle,
+            company: "Agency Client",
+            location: "Remote",
+            type: "Full-time",
+            tags: jobSkills.split(',').map(s => s.trim()),
+            posted: "Just Now",
+            requiredSkills: jobSkills.split(',').map(s => s.trim())
+        };
+
         // Simulate AI matching process
         setTimeout(() => {
+            addJob(newJob);
             setIsPosting(false);
             setPostSuccess(true);
             setTimeout(() => {
                 setPostSuccess(false);
                 setShowPostModal(false);
+                setJobTitle('');
+                setJobSkills('');
+                setBudget('');
             }, 3000);
         }, 2000);
     };
@@ -154,15 +177,35 @@ const AgencyDashboard = () => {
 
                                     <div className={styles.inputGroup}>
                                         <label>Job Title</label>
-                                        <input type="text" placeholder="e.g. Senior React Developer" required className={styles.modalInput} />
+                                        <input
+                                            type="text"
+                                            placeholder="e.g. Senior React Developer"
+                                            required
+                                            className={styles.modalInput}
+                                            value={jobTitle}
+                                            onChange={e => setJobTitle(e.target.value)}
+                                        />
                                     </div>
                                     <div className={styles.inputGroup}>
                                         <label>Required Skills (comma separated)</label>
-                                        <input type="text" placeholder="React, Node.js, TypeScript" required className={styles.modalInput} />
+                                        <input
+                                            type="text"
+                                            placeholder="React, Node.js, TypeScript"
+                                            required
+                                            className={styles.modalInput}
+                                            value={jobSkills}
+                                            onChange={e => setJobSkills(e.target.value)}
+                                        />
                                     </div>
                                     <div className={styles.inputGroup}>
                                         <label>Budget Range</label>
-                                        <input type="text" placeholder="$80k - $120k" className={styles.modalInput} />
+                                        <input
+                                            type="text"
+                                            placeholder="$80k - $120k"
+                                            className={styles.modalInput}
+                                            value={budget}
+                                            onChange={e => setBudget(e.target.value)}
+                                        />
                                     </div>
 
                                     <button type="submit" className={styles.submitBtn} disabled={isPosting}>
@@ -178,7 +221,7 @@ const AgencyDashboard = () => {
                                         <FaCheckCircle color="white" size={30} />
                                     </motion.div>
                                     <h3>Job Posted Successfully!</h3>
-                                    <p style={{ color: '#aaa' }}>Our AI Agent is now notifying top 5 matching candidates.</p>
+                                    <p style={{ color: '#aaa' }}>The job is now live on the candidate feed.</p>
                                 </div>
                             )}
                         </motion.div>

@@ -8,6 +8,7 @@ const InterviewSetup = () => {
     const navigate = useNavigate();
     const [selectedMode, setSelectedMode] = useState(null);
     const [difficulty, setDifficulty] = useState('Medium');
+    const [resumeText, setResumeText] = useState('');
 
     const modes = [
         { id: 'hr', name: 'HR / Behavioral', icon: <FaUserTie />, desc: 'Common behavioral questions like "Tell me about a time..."' },
@@ -18,7 +19,7 @@ const InterviewSetup = () => {
 
     const handleStart = () => {
         if (!selectedMode) return;
-        navigate('/dashboard/interview/session', { state: { mode: selectedMode, difficulty } });
+        navigate('/dashboard/interview/session', { state: { mode: selectedMode, difficulty, resumeText } });
     };
 
     return (
@@ -57,6 +58,28 @@ const InterviewSetup = () => {
                     <option>Medium</option>
                     <option>Hard</option>
                 </select>
+            </div>
+
+            <div className={styles.settings}>
+                <label>Resume / Job Context (Optional):</label>
+                <textarea
+                    className={styles.contextInput}
+                    placeholder="Paste your resume summary or target job description here to personalize the interview..."
+                    rows="4"
+                    value={resumeText}
+                    onChange={(e) => setResumeText(e.target.value)}
+                    style={{
+                        width: '100%',
+                        padding: '1rem',
+                        borderRadius: '0.5rem',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        background: 'rgba(0,0,0,0.2)',
+                        color: 'white',
+                        fontFamily: 'inherit',
+                        marginTop: '0.5rem',
+                        resize: 'vertical'
+                    }}
+                />
             </div>
 
             <button

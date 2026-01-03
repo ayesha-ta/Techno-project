@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaMicrophone, FaPaperPlane, FaStop, FaVideo, FaVideoSlash, FaHeadphones, FaUser } from 'react-icons/fa';
+import { FaMicrophone, FaPaperPlane, FaStop, FaVideo, FaVideoSlash, FaHeadphones, FaUser, FaRobot } from 'react-icons/fa';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import styles from './InterviewSession.module.css';
 
 const InterviewSession = () => {
@@ -10,10 +11,13 @@ const InterviewSession = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isRecording, setIsRecording] = useState(false);
-    const [cameraOn, setCameraOn] = useState(true);
     const messagesEndRef = useRef(null);
     const videoRef = useRef(null);
-    const initialized = useRef(false);
+
+    // AI State
+    const [chatSession, setChatSession] = useState(null);
+    const [isStreaming, setIsStreaming] = useState(false);
+    const [feedbackData, setFeedbackData] = useState(null);
 
     // New State for Media Mode
     const [mediaMode, setMediaMode] = useState('video'); // 'video' | 'audio'
@@ -22,20 +26,55 @@ const InterviewSession = () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = useRef(SpeechRecognition ? new SpeechRecognition() : null);
 
-    // Mock Questions Bank
-    const questions = {
-        hr: ["Tell me about yourself.", "What is your greatest weakness?", "Why do you want to work here?"],
-        tech: ["Explain the Virtual DOM in React.", "What is the difference between var, let, and const?", "How do you optimize a React app?"],
-        founder: ["What is your vision for this product?", "How do you handle uncertainty?", "Pitch me your last project."],
-        negotiation: ["We're offering $95,000 for this role. What are your thoughts?", "What salary range are you expecting?", "Can you justify why you deserve a higher salary?"]
-    };
-
-    const currentQuestions = questions[state?.mode] || questions.hr;
-
     const [isPaused, setIsPaused] = useState(false);
-
     const [hasJoined, setHasJoined] = useState(false);
     const [cameraPermission, setCameraPermission] = useState(false);
+
+    // Initialize Gemini AI
+    const initializeAI = async () => {
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+        if (!apiKey) {
+            alert("API Key is missing! Please add VITE_GEMINI_API_KEY to your .env file.");
+            return;
+        }
+
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            systemInstruction: `You are an expert technical interviewer.
+            Context:
+            - Role: ${state?.mode || 'General'}
+            - Difficulty: ${state?.difficulty || 'Medium'}
+            - Candidate Resume/Context: "${state?.resumeText || 'No resume provided.'}"
+
+            Your Goal:
+            1. Conduct a realistic, multi-turn interview.
+            2. Start by greeting the user and acknowledging their resume (if present).
+            3. Ask ONE clear question at a time.
+            4. Wait for the user's answer.
+            5. Provide brief, constructive feedback on their answer.
+            6. Then ask the NEXT relevant question.
+            7. Keep spoken responses concise (max 3-4 sentences).
+            8. Occasionally (every turn) output a JSON block at the END of your text for UI stats:
+               { "confidence": 85, "clarity": 90, "feedback": "Good point on scalability." }
+            `,
+            safetySettings: [
+                { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+            ]
+        });
+
+        const chat = model.startChat({
+            history: [],
+            generationConfig: {
+                maxOutputTokens: 500,
+            },
+        });
+        setChatSession(chat);
+        return chat;
+    };
 
     const handleJoinSession = () => {
         setHasJoined(true);
@@ -45,13 +84,19 @@ const InterviewSession = () => {
     useEffect(() => {
         if (!hasJoined) return;
 
-        console.log(`Joined session in ${mediaMode} mode, initializing...`);
+        const startSession = async () => {
+            // Initial AI Setup
+            const chat = await initializeAI();
 
-        const startSession = () => {
-            const role = state?.jobTitle || state?.mode || 'General';
-            const greeting = `Hello! I'm your AI Interviewer for this ${role} position. Let's start. ${currentQuestions[0]}`;
-            addMessage('ai', greeting);
-            speak(greeting);
+            if (chat) {
+                try {
+                    // Start conversation with streaming
+                    await streamMessage(chat, "Start the interview.");
+                } catch (error) {
+                    console.error("Error starting AI:", error);
+                    addMessage('ai', "Hello! I'm ready to interview you. Could not connect to Gemini AI.");
+                }
+            }
         };
 
         // Access Media based on Mode
@@ -63,18 +108,17 @@ const InterviewSession = () => {
 
             navigator.mediaDevices.getUserMedia(constraints)
                 .then(stream => {
-                    console.log("Media access granted");
                     if (videoRef.current && mediaMode === 'video') {
                         videoRef.current.srcObject = stream;
                     }
                     setCameraPermission(true);
-
-                    // Start AI after a moment
                     setTimeout(startSession, 1500);
                 })
                 .catch(err => {
                     console.error("Media access denied:", err);
                     alert("Could not access microphone/camera. Please check permissions.");
+                    // Still try to start AI for text mode
+                    setTimeout(startSession, 1000);
                 });
         } else {
             console.log("Media devices not supported");
@@ -89,20 +133,24 @@ const InterviewSession = () => {
 
     const speak = (text) => {
         if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.cancel();
+            const spokenText = text.replace(/[*#]/g, '');
+            const utterance = new SpeechSynthesisUtterance(spokenText);
             utterance.rate = 1.0;
             utterance.pitch = 1.0;
-            // Try to find a good voice
             const voices = window.speechSynthesis.getVoices();
-            const preferredVoice = voices.find(voice => voice.name.includes('Google US English')) || voices[0];
+            const preferredVoice = voices.find(voice =>
+                voice.name.includes('Google US English') ||
+                voice.name.includes('Samantha') ||
+                voice.lang === 'en-US'
+            ) || voices[0];
             if (preferredVoice) utterance.voice = preferredVoice;
-
             window.speechSynthesis.speak(utterance);
         }
     };
 
     const togglePause = () => {
-        if (mediaMode === 'audio') return; // No video pause in audio mode
+        if (mediaMode === 'audio') return;
 
         if (isPaused) {
             videoRef.current.play();
@@ -115,26 +163,75 @@ const InterviewSession = () => {
         }
     };
 
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
-
     const addMessage = (sender, text) => {
         setMessages(prev => [...prev, { sender, text }]);
     };
 
-    const handleSend = () => {
-        if (!input.trim()) return;
-        addMessage('user', input);
+    // Helper to extract JSON from text safely
+    const extractJson = (text) => {
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+            try {
+                const data = JSON.parse(jsonMatch[0]);
+                setFeedbackData(data);
+                return text.replace(jsonMatch[0], '').trim();
+            } catch (e) {
+                // partial json, ignore
+            }
+        }
+        return text;
+    };
+
+    // Core Streaming Logic
+    const streamMessage = async (chat, prompt) => {
+        setIsStreaming(true);
+
+        // Add a placeholder message for AI
+        setMessages(prev => [...prev, { sender: 'ai', text: '' }]);
+
+        try {
+            const result = await chat.sendMessageStream(prompt);
+            let fullText = '';
+
+            for await (const chunk of result.stream) {
+                const chunkText = chunk.text();
+                fullText += chunkText;
+
+                // Real-time update of the last message
+                setMessages(prev => {
+                    const newMessages = [...prev];
+                    const lastMsg = newMessages[newMessages.length - 1];
+                    lastMsg.text = extractJson(fullText); // Hide JSON from UI in real-time
+                    return newMessages;
+                });
+            }
+
+            // Final Speech after stream is done (so it speaks full sentences)
+            const cleanText = extractJson(fullText);
+            speak(cleanText);
+
+        } catch (error) {
+            console.error("Streaming Error:", error);
+            setMessages(prev => {
+                const newMessages = [...prev];
+                // More helpful error message
+                newMessages[newMessages.length - 1].text = "I encountered a network issue. Please check your connection or API key.";
+                return newMessages;
+            });
+        }
+
+        setIsStreaming(false);
+    };
+
+    const handleSend = async () => {
+        if (!input.trim() || isStreaming) return;
+        const userText = input;
+        addMessage('user', userText);
         setInput('');
 
-        // Simulate AI Response/Feedback
-        setTimeout(() => {
-            const nextQ = currentQuestions[Math.floor(Math.random() * currentQuestions.length)];
-            const aiResponse = `That's a solid answer. Next question: ${nextQ}`;
-            addMessage('ai', aiResponse);
-            speak(aiResponse);
-        }, 2000);
+        if (chatSession) {
+            await streamMessage(chatSession, userText);
+        }
     };
 
     const toggleRecording = () => {
@@ -157,30 +254,36 @@ const InterviewSession = () => {
 
             recognition.current.onend = () => {
                 setIsRecording(false);
+                // Optional: Auto-submit could go here
             };
         }
     };
 
     const endInterview = () => {
-        // Simulate AI Analysis calculation
-        const mockAnalysis = {
+        if (videoRef.current && videoRef.current.srcObject) {
+            const tracks = videoRef.current.srcObject.getTracks();
+            tracks.forEach(track => track.stop());
+        }
+        window.speechSynthesis.cancel();
+
+        const finalData = {
             scores: {
-                confidence: Math.floor(Math.random() * (98 - 70) + 70),
-                clarity: Math.floor(Math.random() * (95 - 75) + 75),
-                technical: Math.floor(Math.random() * (100 - 60) + 60),
+                confidence: feedbackData?.confidence || 75,
+                clarity: feedbackData?.clarity || 80,
+                technical: 85
             },
             strengths: [
-                "Maintained good eye contact throughout the session.",
-                "Used clear and concise professional language.",
-                "Demonstrated strong problem-solving approach."
+                "Good engagement.",
+                "Clear audio communication.",
+                "Addressed core concepts."
             ],
             improvements: [
-                "Could provide more specific examples for behavioral questions.",
-                "Pause slightly more often to allow for natural conversation flow.",
-                "Elaborate more on the technical implementation details."
-            ]
+                "Could provide more concrete examples.",
+                "Ensure to pause for emphasis."
+            ],
         };
-        navigate('/dashboard/interview/feedback', { state: mockAnalysis });
+
+        navigate('/dashboard/interview/feedback', { state: finalData });
     };
 
     if (!hasJoined) {
@@ -192,23 +295,23 @@ const InterviewSession = () => {
                     animate={{ scale: 1, opacity: 1 }}
                 >
                     <h2>Ready for your Interview?</h2>
+
+                    {state?.resumeText && (
+                        <div style={{ background: 'rgba(16, 185, 129, 0.1)', padding: '0.5rem', borderRadius: '0.5rem', marginBottom: '1rem', fontSize: '0.9rem', color: '#10b981' }}>
+                            <FaUser /> Resume Context Loaded
+                        </div>
+                    )}
+
                     <p>You are about to start a <strong>{state?.mode || 'General'}</strong> interview.</p>
                     <p className={styles.lobbyNote}>Choose your preferred mode:</p>
 
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '2rem' }}>
                         <button
                             onClick={() => setMediaMode('video')}
+                            className={`${styles.modeBtn} ${mediaMode === 'video' ? styles.modeBtnActive : ''}`}
                             style={{
-                                padding: '1rem 2rem',
-                                borderRadius: '1rem',
                                 border: mediaMode === 'video' ? '2px solid #3b82f6' : '1px solid #333',
                                 background: mediaMode === 'video' ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
-                                color: 'white',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: '0.5rem'
                             }}
                         >
                             <FaVideo size={24} />
@@ -216,17 +319,10 @@ const InterviewSession = () => {
                         </button>
                         <button
                             onClick={() => setMediaMode('audio')}
+                            className={`${styles.modeBtn} ${mediaMode === 'audio' ? styles.modeBtnActive : ''}`}
                             style={{
-                                padding: '1rem 2rem',
-                                borderRadius: '1rem',
                                 border: mediaMode === 'audio' ? '2px solid #10b981' : '1px solid #333',
                                 background: mediaMode === 'audio' ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
-                                color: 'white',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: '0.5rem'
                             }}
                         >
                             <FaHeadphones size={24} />
@@ -235,9 +331,7 @@ const InterviewSession = () => {
                     </div>
 
                     <p className={styles.lobbyNote} style={{ fontSize: '0.8rem', color: '#888' }}>
-                        {mediaMode === 'video'
-                            ? "Ensure you are in a quiet environment and your camera is ready."
-                            : "Ensure your microphone is working clearly."}
+                        Powered by Google Gemini ✦ Real-time Streaming
                     </p>
 
                     <button className={styles.joinBtn} onClick={handleJoinSession}>
@@ -258,8 +352,10 @@ const InterviewSession = () => {
                 <div className={styles.videoGrid}>
                     <div className={styles.aiVideo}>
                         <div className={styles.aiAvatarWrapper}>
-                            <div className={styles.aiPulse}></div>
-                            <span className={styles.aiLabel}>AI Interviewer</span>
+                            <div className={`${styles.aiPulse} ${isStreaming ? styles.thinking : ''}`}></div>
+                            <span className={styles.aiLabel}>
+                                {isStreaming ? 'AI Speaking...' : 'AI Interviewer'}
+                            </span>
                         </div>
                     </div>
                     <div className={styles.userVideo}>
@@ -273,31 +369,12 @@ const InterviewSession = () => {
                                 </div>
                             </>
                         ) : (
-                            <div style={{
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                background: '#1e293b',
-                                color: '#94a3b8',
-                                flexDirection: 'column',
-                                gap: '1rem'
-                            }}>
-                                <div style={{
-                                    width: '80px',
-                                    height: '80px',
-                                    borderRadius: '50%',
-                                    background: '#334155',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}>
+                            <div className={styles.audioPlaceholder}>
+                                <div className={styles.audioAvatar}>
                                     <FaUser size={32} />
                                 </div>
                                 <p>Audio Mode Active</p>
                                 <div className={styles.audioWave}>
-                                    {/* Simulated audio visualizer could go here */}
                                     <div className={styles.bar}></div>
                                     <div className={styles.bar}></div>
                                     <div className={styles.bar}></div>
@@ -316,8 +393,11 @@ const InterviewSession = () => {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                         >
-                            <div className={styles.avatar}>{msg.sender === 'ai' ? 'AI' : 'ME'}</div>
-                            <div className={styles.bubble}>{msg.text}</div>
+                            <div className={styles.avatar}>{msg.sender === 'ai' ? <FaRobot /> : 'ME'}</div>
+                            <div className={styles.bubble}>
+                                {msg.text}
+                                {msg.sender === 'ai' && i === messages.length - 1 && isStreaming && <span className={styles.cursor}>|</span>}
+                            </div>
                         </motion.div>
                     ))}
                     <div ref={messagesEndRef} />
@@ -336,21 +416,40 @@ const InterviewSession = () => {
                         onChange={(e) => setInput(e.target.value)}
                         placeholder="Type your answer..."
                         onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                        disabled={isStreaming}
                     />
-                    <button className={styles.sendBtn} onClick={handleSend}><FaPaperPlane /></button>
+                    <button className={styles.sendBtn} onClick={handleSend} disabled={isStreaming || !input.trim()}>
+                        <FaPaperPlane />
+                    </button>
                 </div>
             </div>
 
             <div className={styles.sidebar}>
                 <h3>Real-time Coach 🤖</h3>
+
+                {feedbackData ? (
+                    <>
+                        <div className={styles.feedbackCard}>
+                            <h4>Confidence</h4>
+                            <div className={styles.meter}>
+                                <div style={{ width: `${feedbackData.confidence || 50}%`, background: '#10b981' }}></div>
+                            </div>
+                            <p>{feedbackData.confidence}%</p>
+                        </div>
+                        <div className={styles.feedbackCard}>
+                            <h4>Latest Feedback</h4>
+                            <p style={{ fontSize: '0.9rem' }}>{feedbackData.feedback || "Analyzing..."}</p>
+                        </div>
+                    </>
+                ) : (
+                    <div className={styles.feedbackCard}>
+                        <p>Detailed analysis will appear here as you speak.</p>
+                    </div>
+                )}
+
                 <div className={styles.feedbackCard}>
-                    <h4>Tone Analysis</h4>
-                    <div className={styles.meter}><div style={{ width: '85%', background: '#10b981' }}></div></div>
-                    <p>You sound confident! Keep it up.</p>
-                </div>
-                <div className={styles.feedbackCard}>
-                    <h4>Clarification</h4>
-                    <p>Try to use the "STAR" method (Situation, Task, Action, Result) for this answer.</p>
+                    <h4>Clarification Helper</h4>
+                    <p>Remember the STAR method: Situation, Task, Action, Result.</p>
                 </div>
 
                 <button className={styles.endBtn} onClick={endInterview}>End Interview</button>
@@ -360,4 +459,3 @@ const InterviewSession = () => {
 };
 
 export default InterviewSession;
-

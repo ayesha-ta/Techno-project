@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaBookmark, FaEllipsisH, FaFileUpload, FaMagic, FaMicrophone } from 'react-icons/fa';
+import { FaBookmark, FaEllipsisH, FaFileUpload, FaMagic, FaMicrophone, FaCheckCircle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
@@ -49,22 +49,20 @@ const JobCard = ({ title, company, location, type, posted, tags, match, delay, o
 );
 
 const Dashboard = () => {
-    const { user } = useUser();
+    const { user, jobs } = useUser();
     const navigate = useNavigate();
     const [selectedJob, setSelectedJob] = useState(null);
     const [resumeUploaded, setResumeUploaded] = useState(false);
     const [userSkills, setUserSkills] = useState([]);
     const [isParsing, setIsParsing] = useState(false);
 
-    // Mock Database of Jobs
-    const allJobs = [
-        { id: 1, title: "Senior React Developer", company: "TechFlow", location: "San Francisco, CA", type: "Full-time", tags: ["React", "Node.js"], posted: "2 hours ago", requiredSkills: ["React", "JavaScript"] },
-        { id: 2, title: "Frontend Engineer", company: "InnovateLab", location: "New York, NY", type: "Contract", tags: ["Vue", "CSS"], posted: "5 hours ago", requiredSkills: ["Vue", "Frontend"] },
-        { id: 3, title: "UI/UX Designer", company: "CreativeMinds", location: "Austin, TX", type: "Full-time", tags: ["Figma", "Design"], posted: "1 day ago", requiredSkills: ["Design", "Figma"] },
-        { id: 4, title: "Backend Developer", company: "ServerPro", location: "Remote", type: "Full-time", tags: ["Python", "Django"], posted: "3 hours ago", requiredSkills: ["Python", "Backend"] },
-    ];
+    // Initial Display: Show all shared jobs, filtered if resume is uploaded
+    const [displayedJobs, setDisplayedJobs] = useState([]);
 
-    const [displayedJobs, setDisplayedJobs] = useState(allJobs);
+    useEffect(() => {
+        // Init jobs
+        setDisplayedJobs(jobs);
+    }, [jobs]);
 
     const handleResumeUpload = (e) => {
         setIsParsing(true);
@@ -77,17 +75,24 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        if (resumeUploaded) {
+        if (resumeUploaded && jobs.length > 0) {
             // Simple filter logic: Job is shown if user has at least one matching skill
-            const filtered = allJobs.filter(job =>
+            // Or if no skills required, show it.
+            const filtered = jobs.filter(job =>
+                !job.requiredSkills ||
+                job.requiredSkills.length === 0 ||
                 job.requiredSkills.some(skill => userSkills.includes(skill))
             ).map(job => ({
                 ...job,
                 match: 95 // High match for demo
             }));
-            setDisplayedJobs(filtered);
+
+            // If filter is too strict, show everything for demo purposes
+            setDisplayedJobs(filtered.length > 0 ? filtered : jobs);
+        } else {
+            setDisplayedJobs(jobs);
         }
-    }, [resumeUploaded, userSkills]);
+    }, [resumeUploaded, userSkills, jobs]);
 
     const handlePrep = (jobTitle) => {
         navigate('/dashboard/interview', { state: { mode: 'tech', jobTitle: jobTitle } });
@@ -203,8 +208,6 @@ const Dashboard = () => {
                     <p style={{ textAlign: 'center', fontSize: '0.9rem', color: '#aaa', marginTop: '1rem' }}>Great job! Complete 1 more section.</p>
                 </motion.div>
 
-                {/* ... Rest of widgets */}
-                {/* Keeping Skill Analytics and Recommended Learning */}
                 <motion.div
                     className={styles.widget}
                     initial={{ opacity: 0, x: 20 }}
@@ -222,7 +225,6 @@ const Dashboard = () => {
                                 <div style={{ width: resumeUploaded ? '96%' : '92%', height: '100%', background: '#3b82f6', borderRadius: '3px' }}></div>
                             </div>
                         </div>
-                        {/* ... other skill bars could be dynamic too */}
                     </div>
                 </motion.div>
 
@@ -230,5 +232,5 @@ const Dashboard = () => {
         </div>
     );
 };
-import { FaCheckCircle } from 'react-icons/fa'; // Added missing import
+
 export default Dashboard;
